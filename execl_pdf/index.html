@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Download Table as Excel and PDF</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border: 1px solid #ccc;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    .button {
+      padding: 10px 15px;
+      margin-right: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Employee List</h2>
+  <button id="download-excel" class="button">Download as Excel</button>
+  <button id="download-pdf" class="button">Download as PDF</button>
+
+  <table id="employee-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Position</th>
+        <th>Department</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>John Doe</td>
+        <td>Software Engineer</td>
+        <td>IT</td>
+      </tr>
+      <tr>
+        <td>Jane Smith</td>
+        <td>Project Manager</td>
+        <td>Marketing</td>
+      </tr>
+      <tr>
+        <td>Sam Johnson</td>
+        <td>UX Designer</td>
+        <td>Design</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- jsPDF and jsPDF AutoTable for PDF Export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
+
+  <!-- TableExport library for Excel Export -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/FileSaver.min.js"></script>
+  
+  <script>
+    // Excel Download
+    document.getElementById('download-excel').addEventListener('click', function () {
+      let table = document.getElementById('employee-table');
+      let workbook = XLSX.utils.table_to_book(table, { sheet: "Employee List" });
+      XLSX.writeFile(workbook, 'employee_list.xlsx');
+    });
+
+    // PDF Download
+    document.getElementById('download-pdf').addEventListener('click', function () {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      
+      // Set PDF Title
+      doc.text("Employee List", 14, 10);
+
+      // Convert HTML table to PDF
+      doc.autoTable({
+        html: '#employee-table',
+        startY: 20,
+        styles: { fontSize: 10 }
+      });
+
+      doc.save('employee_list.pdf');
+    });
+  </script>
+
+</body>
+</html>

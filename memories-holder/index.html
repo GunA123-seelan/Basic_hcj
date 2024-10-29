@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memories Holder</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Memories Holder</h1>
+    <form id="memoryForm">
+      <label for="image">Image:</label>
+      <input type="file" id="image" accept="image/*">
+      
+      <label for="description">Description:</label>
+      <textarea id="description" placeholder="Write a short description..."></textarea>
+      
+      <label for="document">Document (PDF):</label>
+      <input type="file" id="document" accept=".pdf">
+      
+      <button type="button" onclick="saveMemory()">Save Memory</button>
+    </form>
+
+    <h2>Your Memories</h2>
+    <div id="memoriesList" class="memories-list"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
