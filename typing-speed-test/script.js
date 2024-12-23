@@ -11,55 +11,61 @@ const textInput = document.getElementById("textInput");
 const startBtn = document.getElementById("startBtn");
 const timerElement = document.getElementById("timer");
 const resultElement = document.getElementById("result");
+const clearElement = document.getElementById("clearBtn");
 
 let timer = 0;
 let interval = null;
-let currentQuote = "";
-let startTime = false;
+let currentQuote = ""; 
+// let startTime = false;
 
+clearElement.addEventListener('click',()=>{
+    clearElement.disabled=true;
+    interval=null;
+    timer=0;
+    timerElement.textContent=''; 
+    quoteElement.textContent='';
+    textInput.value='';
+    textInput.disabled=false;
+    startBtn.disabled=false;
+    resultElement.textContent='';
 
-function getRandomQuote() {
-    return quotes[Math.floor(Math.random() * quotes.length)];
-}
+})
+startBtn.addEventListener('click',startPro);
 
-
-function startTypingTest() {
-    currentQuote = getRandomQuote();
-    quoteElement.textContent = currentQuote;
-    textInput.value = "";
-    textInput.disabled = false;
+function startPro(){
+    console.log("start");
+    textInput.disabled=false;
+    currentQuote=getQuote();
+    quoteElement.textContent=currentQuote;
+    startBtn.disabled=true;
+    textInput.value="";
+    clearElement.disabled=true;
     textInput.focus();
-    timer = 0;
-    startTime = true;
-    resultElement.textContent = "";
-    startBtn.disabled = true;
-
-    interval = setInterval(() => {
+    interval = setInterval(()=>{
         timer++;
-        timerElement.textContent = `Time: ${timer}s`;
-    }, 1000);
+        timerElement.textContent=`Time ${timer}s`
+    },1000)
+    
 }
-
-function endTypingTest() {
+textInput.addEventListener('input',()=>{
+        if(textInput.value === currentQuote){
+            endPro();
+        }
+})
+function endPro(){
+    console.log("endpro",textInput.value);
     clearInterval(interval);
-    textInput.disabled = true;
-    startBtn.disabled = false;
-
-    const typedText = textInput.value.trim();
-    const wordsTyped = typedText.split(" ").length;
-    const correct = typedText === currentQuote;
-
-    if (correct) {
-        resultElement.textContent = `Well done! Your speed is ${wordsTyped} words in ${timer} seconds.`;
-    } else {
-        resultElement.textContent = `Oops! Make sure you type the quote correctly.`;
+    let trim1=textInput.value.trim();
+    let words = trim1.split(" ").length;
+    console.log("words",words);
+    if(textInput.value === currentQuote){
+        resultElement.textContent = `Well done! Your speed is ${words} words in ${timer} seconds.`;
+        clearElement.disabled=false;
+        textInput.disabled=true;
+    }else{
+        resultElement.textContent=`sorry`;
     }
 }
-
-startBtn.addEventListener("click", startTypingTest);
-
-textInput.addEventListener("input", () => {
-    if (textInput.value === currentQuote) {
-        endTypingTest();
-    }
-});
+function getQuote(){
+    return quotes[Math.floor(Math.random() * quotes.length)]
+}
